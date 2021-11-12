@@ -14,8 +14,7 @@
         Background="AliceBlue"
         Icon="assets/shield.ico">
     <Window.Resources>
-        <local:FondoConverter x:Key="conversorFondo"></local:FondoConverter>
-        <local:VisibilityConverter x:Key="conversorVisibilidad"></local:VisibilityConverter>
+       
 
         <Style TargetType="Image"
                x:Key="flechas">
@@ -33,9 +32,91 @@
                     Value="Bold"></Setter>
         </Style>
 
+        <Style TargetType="Image" x:Key="ImagenSuperhéroe">
+            <Setter Property="Opacity" Value="0.5"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName= imagenSuperheroe, Path=IsMouseOver}" Value="True">
+                    <Setter Property="Opacity" Value="1"/>
+                    
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Border">
+            
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName= imagenSuperheroe, Path=IsMouseOver}" Value="True">
+                    <Setter Property="BorderThickness" Value="3"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DockPanel">
+           
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=HeroeActual.Heroe}" Value="True">
+                    <Setter Property="Background" Value="Green"/>
+                    
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=HeroeActual.Heroe}" Value="False">
+                    <Setter Property="Background" Value="IndianRed"/>
+
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="Image" x:Key="logotipoVengador">
+
+            <Setter Property="Visibility" Value="Collapsed"/>
+
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=HeroeActual.Vengador}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+
+                </DataTrigger>
+               
+            </Style.Triggers>
+        </Style>
+
+
+        <Style TargetType="Image" x:Key="logotipoXmen">
+
+            <Setter Property="Visibility" Value="Collapsed"/>
+
+            <Style.Triggers>
+                
+                <DataTrigger Binding="{Binding Path=HeroeActual.Xmen}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="80" Duration="0:0:5"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="40" Duration="0:0:5"></DoubleAnimation>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+
+      
+
     </Window.Resources>
-    <DockPanel x:Name="superheroeDockPanel"
-                       Background="{Binding Path=HeroeActual.Heroe, Converter={StaticResource conversorFondo}}">
+    <DockPanel x:Name="superheroeDockPanel">
         <DockPanel LastChildFill="False"
                            DockPanel.Dock="Top">
             <TextBlock DockPanel.Dock="Left"
@@ -53,11 +134,11 @@
                                 DockPanel.Dock="Right"
                                 VerticalAlignment="Bottom">
                 <Image Source="assets/avengers.png"
-                               Visibility="{Binding Path=HeroeActual.Vengador,Converter={StaticResource conversorVisibilidad}}"
+                               Style ="{StaticResource logotipoVengador}"
                                Width="40"
                                Margin="0,0,10,0"></Image>
                 <Image Source="assets/xmen.png"
-                               Visibility="{Binding Path=HeroeActual.Xmen,Converter={StaticResource conversorVisibilidad}}"
+                              Style ="{StaticResource logotipoXmen}"
                                Width="60"></Image>
             </StackPanel>
         </DockPanel>
@@ -94,8 +175,11 @@
                 </Image.RenderTransform>
             </Image>
         </StackPanel>
-        <Image Source="{Binding Path=HeroeActual.Imagen}"
+        <Border x:Name="bordeImagen" Margin="10">
+        <Image x:Name="imagenSuperheroe" Style="{StaticResource ImagenSuperhéroe}" Source="{Binding Path=HeroeActual.Imagen}"
                        Stretch="UniformToFill"
-                       Margin="10"></Image>
+                       ></Image>
+
+        </Border>
     </DockPanel>
 </Window>
